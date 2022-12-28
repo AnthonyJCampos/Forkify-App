@@ -1,0 +1,23 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Forkify Application",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnthonyJCampos/Forkify-App.git"
+  },
+  "author": "Anthony Campos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnthonyJCampos/Forkify-App/issues"
+  },
+  "homepage": "https://github.com/AnthonyJCampos/Forkify-App#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.2",
+    "parcel": "^2.8.2"
+  }
+}
