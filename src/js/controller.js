@@ -1,6 +1,12 @@
 // we can import assest like images & icons with parcel
-//import icons from '../img/icons.svg'; // Works in Parcel 1
+// this is needed as parcel has changed the naming of files
+// and folders
 import icons from 'url:../img/icons.svg'; // Parcel 2
+
+// this import is for Polyfilling
+// so that we can support older browsers
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 const recipeContainer = document.querySelector('.recipe');
 
@@ -16,9 +22,27 @@ const timeout = function (s) {
 
 ///////////////////////////////////////
 
+function renderSpinner(parentEl) {
+  const markup = `
+    <div class="spinner">
+      <svg>
+        <use href="${icons}#icon-loader"></use>
+      </svg>
+    </div>
+  `;
+
+  // this clears the innerHTML of the parent element
+  // So that we only display the spinner within
+  parentEl.innerHTML = '';
+  parentEl.insertAdjacentHTML('afterbegin', markup);
+} // end renderSpinner
+
 async function showRecipe() {
   try {
     // 1. Loading Recipe
+
+    // this creates a spinner while we load
+    renderSpinner(recipeContainer);
     const response = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886`
     );
@@ -27,7 +51,6 @@ async function showRecipe() {
     if (!response.ok) {
       throw new Error(`${data.message} (${response.status})`);
     }
-    console.log(response, data);
 
     let { recipe } = data.data;
     recipe = {
@@ -40,8 +63,6 @@ async function showRecipe() {
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
     };
-
-    console.log(recipe);
 
     // 2. Rendering Recipe
     const markup = `
@@ -142,6 +163,8 @@ async function showRecipe() {
         </a>
       </div>
     `;
+    // This clears the spinner element by clearing all elements in the
+    // container
     recipeContainer.innerHTML = '';
     recipeContainer.insertAdjacentHTML('afterbegin', markup);
   } catch (error) {
