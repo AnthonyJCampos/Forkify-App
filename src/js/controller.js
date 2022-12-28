@@ -39,12 +39,17 @@ function renderSpinner(parentEl) {
 
 async function showRecipe() {
   try {
-    // 1. Loading Recipe
+    const id = window.location.hash.slice(1);
 
+    // guard if there is no current ID
+    if (!id) {
+      return;
+    }
+    // 1. Loading Recipe
     // this creates a spinner while we load
     renderSpinner(recipeContainer);
     const response = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886`
+      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
     );
 
     const data = await response.json();
@@ -172,4 +177,8 @@ async function showRecipe() {
   }
 } // end showRecipe
 
-showRecipe();
+// this event tracks when the hash has changed on the page
+// & event tracks when the page first loads
+['hashchange', 'load'].forEach(event =>
+  window.addEventListener(event, showRecipe)
+);
