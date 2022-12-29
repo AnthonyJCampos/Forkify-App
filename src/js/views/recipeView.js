@@ -7,6 +7,8 @@ import { Fraction } from 'fractional';
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
+  #message = 'Start by searching for a recipe or an ingredient. Have fun!';
+  #errorMessage = 'No recipes found for your query. Please try again!';
 
   render(data) {
     this.#data = data;
@@ -36,6 +38,36 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   } // end renderSpinner
 
+  renderMessage(message = this.#message) {
+    const markup = `
+      <div class="message">
+        <div>
+          <svg>
+            <use href="${icons}#icon-smile"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
+      </div>
+    `;
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  } // end renderError
+
+  renderError(message = this.#errorMessage) {
+    const markup = `
+      <div class="error">
+        <div>
+          <svg>
+            <use href="${icons}#icon-alert-triangle"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
+      </div>
+    `;
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  } // end renderError
+
   addHandlerRender(handler) {
     // this event tracks when the hash has changed on the page
     // & event tracks when the page first loads
@@ -43,6 +75,7 @@ class RecipeView {
       window.addEventListener(event, handler)
     );
   } // end addHandlerRender
+
   #generateMarkup() {
     return `
     <figure class="recipe__fig">
