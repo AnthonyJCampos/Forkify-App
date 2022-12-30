@@ -1,12 +1,12 @@
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
+import searchView from './views/searchView.js';
 
 // this import is for Polyfilling
 // so that we can support older browsers
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-
-const recipeContainer = document.querySelector('.recipe');
+import { async } from 'regenerator-runtime';
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -33,7 +33,24 @@ async function controlRecipes() {
   }
 } // end showRecipe
 
+const controlSearchResults = async function () {
+  try {
+    // 1. get search query
+    const query = searchView.getQuery();
+    if (!query) {
+      return;
+    }
+    // 2. load search results
+    await model.loadSearchResults(query);
+    // 3. render resuls to console
+    console.log(model.state.search.results);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 };
 init();
