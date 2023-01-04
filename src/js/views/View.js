@@ -3,6 +3,10 @@ import icons from 'url:../../img/icons.svg';
 export default class View {
   _data;
   render(data) {
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      return this.renderError();
+    }
+
     this._data = data;
     // This clears the spinner element by clearing all elements in the
     // container
