@@ -51,6 +51,15 @@ export const loadSearchResults = async function (query) {
   }
 }; // end loadSearchResults
 
+export const updateServings = function (newServings) {
+  state.recipe.ingredients.forEach(ingredient => {
+    ingredient.quantity =
+      (ingredient.quantity * newServings) / state.recipe.servings;
+    // newQT = oldQT * newServings / oldServings
+  });
+  state.recipe.servings = newServings;
+};
+
 export const getSearchResultsPage = function (page = state.search.page) {
   // save the current page
   state.search.page = page;
