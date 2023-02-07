@@ -77,6 +77,10 @@ export const getSearchResultsPage = function (page = state.search.page) {
   return state.search.results.slice(start, end);
 }; // end  getSearchResultsPage
 
+const persistBookmarks = function () {
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+}; // end persistBookmarks
+
 export const addBookmark = function (recipe) {
   // add bookmark
   state.bookmarks.push(recipe);
@@ -85,6 +89,9 @@ export const addBookmark = function (recipe) {
   if (recipe.id === state.recipe.id) {
     state.recipe.bookmarked = true;
   } // end if
+
+  // store bookmarks
+  persistBookmarks();
 }; // end addBookmark
 
 export const deleteBookmark = function (id) {
@@ -96,4 +103,16 @@ export const deleteBookmark = function (id) {
   if (id === state.recipe.id) {
     state.recipe.bookmarked = false;
   } // end if
+
+  // store bookmarks
+  persistBookmarks();
 }; // end deleteBookmark
+
+const init = function () {
+  const storage = localStorage.getItem('bookmarks');
+
+  if (storage) {
+    state.bookmarks = JSON.parse(storage);
+  } // end if
+}; // end init
+init();
